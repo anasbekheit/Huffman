@@ -8,7 +8,7 @@ import java.util.*;
 public class HuffmanEncoder {
 
 
-    public HuffmanEncodedResult compress (final String data){
+  /***DONE***/  public HuffmanEncodedResult compress (final String data){
         final int[] freq=buildFreqArray(data);
         final Node root=buildHuffmanTree(freq);
         final Map<Character,String> codes=buildCodes(root);
@@ -16,14 +16,14 @@ public class HuffmanEncoder {
     return new HuffmanEncodedResult(generateEncodedData(data,codes),root);
     }
 
-    private static String generateEncodedData(final String data,final Map<Character,String>codes){
+ /***DONE***/   private static String generateEncodedData(final String data,final Map<Character,String>codes){
         final StringBuilder builder= new StringBuilder();
         for(final char character:data.toCharArray()){
             builder.append(codes.get(character));
         }
         return builder.toString();
     }
-    public String decompress (final HuffmanEncodedResult result){
+   /*** DONE***/ public String decompress (final HuffmanEncodedResult result){
         final StringBuilder resultBuilder=new StringBuilder();
         Node current= result.root;
         for(int i =0 ;i<result.encodedData.length();){
@@ -58,7 +58,7 @@ public class HuffmanEncoder {
 
     }
 
-    static class Node implements Comparable<Node>{
+    /*** DONE***/ static class Node implements Comparable<Node>{
          final char character;
          final int frequency;
          final Node leftChild,rightChild;
@@ -81,7 +81,7 @@ public class HuffmanEncoder {
         }
     }
 
-    private static int [] buildFreqArray(final String data){
+   /***DONE***/ private static int [] buildFreqArray(final String data){
         final int[] freq=new int[256];
         for(char character :data.toCharArray()){
             freq[character]++;
@@ -105,14 +105,14 @@ public class HuffmanEncoder {
         return pq.poll();
     }
 
-    private static Map<Character,String> buildCodes(final Node root){
+   /***DONE***/ private static Map<Character,String> buildCodes(final Node root){
         final Map<Character,String> hashTable= new HashMap<>();
         buildCodesHelper(root,"",hashTable);
         return hashTable;
 
     }
 
-    private static void buildCodesHelper(final Node root,final String s,final Map<Character,String> hashMap){
+    /***DONE***/private static void buildCodesHelper(final Node root,final String s,final Map<Character,String> hashMap){
         if(!root.isLeaf()){
             buildCodesHelper(root.leftChild,s+'0',hashMap);
             buildCodesHelper(root.rightChild,s+'1',hashMap);
@@ -155,6 +155,21 @@ public class HuffmanEncoder {
         sb.reverse();
         return sb.toString();
     }
+    public static LinkedList<Node> getNodes(HuffmanEncodedResult huffmanEncodedResult){
+        LinkedList<Node> nodes= new LinkedList<>();
+        getNodesHelper(huffmanEncodedResult.root,nodes);
+        return nodes;
+    }
+
+    private static void getNodesHelper(Node root, LinkedList<Node> nodes) {
+        if(root.isLeaf()){
+            nodes.add(root);
+        }
+        getNodesHelper(root.leftChild,nodes);
+        getNodesHelper(root.rightChild,nodes);
+
+    }
+
     public static void main(String[] args){
 
        String test="abbccccddddddeeeeeeeeffffffffffffffffffgggggggggggggggggggggggggggggggggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
