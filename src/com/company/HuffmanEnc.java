@@ -8,27 +8,32 @@ public class HuffmanEnc {
       short num_entries;
       byte paddedZeros;
       Map<Character,String> hashTable;
-      short [] freq;
-    public HuffmanEnc(String encodedData,short[] freq) {
+      int [] freq;
+    public HuffmanEnc(String encodedData,int[] freq) {
         this.encodedData = encodedData;
         this.root=HuffmanEnc.buildHuffmanTree(freq);
     }
     public HuffmanEnc(){}
+    public HuffmanEnc(int[] freq,byte[] encodedData,int stringLength){
+        this.freq=freq;
+        this.root=buildHuffmanTree(freq);
+        this.encodedData=getBytesAsString(encodedData,stringLength);
 
+    }
     public void compress(String data){
         this.freq=buildFreqArray(data);
         this.root=buildHuffmanTree(freq);
         buildCodes();
         this.encodedData=generateEncodedData(data);
-        this.paddedZeros= (byte) (8*this.getStringAsBytes(this.encodedData).length- this.encodedData.length());
+        this.paddedZeros= (byte) (8*getStringAsBytes(this.encodedData).length- this.encodedData.length());
 
     }
     public String decompress (String encodedData){
         final StringBuilder resultBuilder=new StringBuilder();
         Node current=this.root;
-        for(int i =0 ;i<this.encodedData.length();){
+        for(int i =0 ;i<encodedData.length();){
             while(!current.isLeaf()){
-                char bit=this.encodedData.charAt(i);
+                char bit=encodedData.charAt(i);
                 if (bit == '1') {
                     current=current.rightChild;
 
@@ -63,7 +68,7 @@ public class HuffmanEnc {
         }
     }
 
-    public static Node buildHuffmanTree(short[] freq) {
+    public static Node buildHuffmanTree(int[] freq) {
         final PriorityQueue<Node> pq=new PriorityQueue<>();
         for(char i=0 ;i<freq.length;i++){
             if(freq[i]>0){
@@ -82,8 +87,8 @@ public class HuffmanEnc {
         return pq.poll();
     }
 
-    private static short[] buildFreqArray(String data) {
-        short[] freq= new short[256];
+    private static int[] buildFreqArray(String data) {
+        int[] freq= new int[256];
         for(char c :data.toCharArray()){
             freq[c]++;
         }
@@ -98,7 +103,7 @@ public class HuffmanEnc {
         return builder.toString();
     }
 
-    public byte[] getStringAsBytes(String encoded){
+    public static byte[] getStringAsBytes(String encoded){
         BitSet bitSet = new BitSet(encoded.length());
         int bitcounter = 0;
         for(Character c : encoded.toCharArray()) {
@@ -110,7 +115,7 @@ public class HuffmanEnc {
         return Arrays.copyOf(bitSet.toByteArray(),(bitcounter+7)/8);
     }
 
-    public String getBytesAsString(byte[] bytes,int stringLength){
+    public static String getBytesAsString(byte[] bytes,int stringLength){
         BitSet set= BitSet.valueOf(bytes);
         String binaryString = "";
         for(int i = 0; i < (set.length()); i++) {
@@ -126,22 +131,4 @@ public class HuffmanEnc {
         }
         return binaryString;
     }
-   /* public Node[] getEntries(){
-        Node[] nodes=new Node[num_entries];
-        getEntriesHelper(this.root,nodes,0);
-        return nodes;
-
-    }
-    private static int getEntriesHelper(Node root, Node[] nodes,int index) {
-
-
-        if(root.isLeaf()){
-            nodes[index++]=(root);
-            return 1;
-
-        }
-       return getEntriesHelper(root.rightChild,nodes,index)+ getEntriesHelper(root.leftChild,nodes,index);
-
-
-    }*/
 }

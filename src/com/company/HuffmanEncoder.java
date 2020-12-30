@@ -123,11 +123,13 @@ public class HuffmanEncoder {
 
     }
 
-    public byte[] getStringAsBytes(String encoded){
-        BitSet bitSet = new BitSet(encoded.length());
+    public byte[] getStringAsBytes(String encoded,int index){
+        BitSet bitSet = new BitSet(encoded.length()-index);
         int bitcounter = 0;
-        for(Character c : encoded.toCharArray()) {
-            if(c.equals('1')) {
+        char[] charArray = encoded.toCharArray();
+        for (int i = index, charArrayLength = charArray.length-index; i < charArrayLength-index; i++) {
+            Character c = charArray[i];
+            if (c.equals('1')) {
                 bitSet.set(bitcounter);
             }
             bitcounter++;
@@ -177,20 +179,20 @@ public class HuffmanEncoder {
         HuffmanEncodedResult encodedResult=encoder.compress(test);
 
         System.out.println("Encoded Message  : "+encodedResult.encodedData);
-        System.out.println("Byte array MSG   : "+encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData),encodedResult.encodedData.length()));
+        System.out.println("Byte array MSG   : "+encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData,0),encodedResult.encodedData.length()));
         System.out.print("Message In Decima: ");
-        for(byte byt : encoder.getStringAsBytes(encodedResult.encodedData)){
+        for(byte byt : encoder.getStringAsBytes(encodedResult.encodedData,0)){
             System.out.print(reverseString(Integer.toBinaryString((byt & 0xFF) + 0x100).substring(1)));
 
 
         }
-        System.out.println("\nENCODED LENGTH: "+encodedResult.encodedData.length()+" \nBytearr LENGTH: "+encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData),encodedResult.encodedData.length()).length());
+        System.out.println("\nENCODED LENGTH: "+encodedResult.encodedData.length()+" \nBytearr LENGTH: "+encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData,0),encodedResult.encodedData.length()).length());
       //  System.out.println("\nByte As String: "+encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData)));
         System.out.println("\nDecoded Message: "+encoder.decompress(encodedResult));
         System.out.println("Previous Length in Bytes: "+test.length());
-        System.out.println("Cuurent Length in Bytes: "+encoder.getStringAsBytes(encodedResult.encodedData).length);
-        System.out.println("Appended Zeros: "+(8*encoder.getStringAsBytes(encodedResult.encodedData).length-encodedResult.encodedData.length()));
-        HuffmanEncodedResult trial= new HuffmanEncodedResult(encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData),encodedResult.encodedData.length()), encodedResult.root);
+        System.out.println("Cuurent Length in Bytes: "+encoder.getStringAsBytes(encodedResult.encodedData,0).length);
+        System.out.println("Appended Zeros: "+(8*encoder.getStringAsBytes(encodedResult.encodedData,0).length-encodedResult.encodedData.length()));
+        HuffmanEncodedResult trial= new HuffmanEncodedResult(encoder.getBytesAsString(encoder.getStringAsBytes(encodedResult.encodedData,0),encodedResult.encodedData.length()), encodedResult.root);
         System.out.println("TRIAL Test Print: "+encoder.decompress(trial));
        // HuffmanEncoder encoder=new HuffmanEncoder();
        // byte[] bytes= new byte[1];
