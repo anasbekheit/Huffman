@@ -3,20 +3,27 @@ package com.company;
 import com.sun.deploy.util.ArrayUtil;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 
 public  class DataHandler {
     public static void save(HuffmanEnc encoder,String path) throws IOException {
-        File file=new File(path+".huff");
+      /*  File file=new File(path+".huff");
         byte[] header=getHeaderInBytes(encoder);
        // FileUtils.writeByteArrayToFile(file, header);
 
         byte[] data= HuffmanEnc.getStringAsBytes(encoder.encodedData);
         byte[] write= concatBytes(header,data);
-        FileUtils.writeByteArrayToFile(file,write);
+        FileUtils.writeByteArrayToFile(file,write);*/
+        byte[] header=getHeaderInBytes(encoder);
+        byte[] data= HuffmanEnc.getStringAsBytes(encoder.encodedData);
+        appendToFile(path,header,false);
+        appendToFile(path,data,true);
         System.out.println("Saved Successfully");
+
 
     }
     public static String load(String filename) throws IOException {
@@ -97,4 +104,14 @@ public  class DataHandler {
         System.arraycopy(b, 0, c, a.length, b.length);
         return c;
     }
+
+private static void appendToFile(String path,byte[] data,boolean append) throws IOException {
+    FileOutputStream output = new FileOutputStream(path+".huff", append);
+    try {
+        output.write(data);
+    } finally {
+        output.close();
+    }
+}
+
 }

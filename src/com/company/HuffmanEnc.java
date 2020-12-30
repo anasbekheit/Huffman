@@ -117,18 +117,23 @@ public class HuffmanEnc {
 
     public static String getBytesAsString(byte[] bytes,int stringLength){
         BitSet set= BitSet.valueOf(bytes);
-        String binaryString = "";
-        for(int i = 0; i < (set.length()); i++) {
+        StringBuilder binaryString = new StringBuilder();
+        int setLength=set.length();
+        for(int i = 0; i < setLength; i++) {
             if(set.get(i)) {
-                binaryString += "1";
+                binaryString.append("1");
             } else {
-                binaryString += "0";
+                binaryString.append("0");
             }
+         /*   if(i%(20000)==0){
+                System.out.println("Step :"+(i/20000)+" Out of :"+setLength/20000);
+            }*/
         }
+
         int completer= stringLength-set.length();
         for(int i=0;i<completer;i++){
-            binaryString+="0";
+            binaryString.append("0");
         }
-        return binaryString;
+        return binaryString.toString();
     }
 }
