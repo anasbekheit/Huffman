@@ -13,16 +13,12 @@ import java.util.Optional;
 public class HuffmanFile {
 
     HuffmanHeader header;
-    Either<HuffmanFile,HuffmanFile[]> files;
+    Either<HuffmanFile[],String> data;
 
 
     public HuffmanFile(BitInput bitInputStream) {
         header = HuffmanHeader.read(bitInputStream);
-        if(header.isFile()){
-            files = Either.left(new HuffmanFile(null));
-        }else{
-            files = Either.right(new HuffmanFile[]{null});
-        }
+
     }
 
     public static HuffmanFile fromFile(String filename) throws FileNotFoundException {
