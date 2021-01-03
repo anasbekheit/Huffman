@@ -5,6 +5,7 @@ import com.company.HuffmanEnc;
 import com.github.jinahya.bit.io.BitInput;
 import com.github.jinahya.bit.io.DefaultBitInput;
 import com.github.jinahya.bit.io.StreamByteInput;
+import files.FileUtils;
 import io.vavr.control.Either;
 
 import java.io.FileInputStream;
@@ -56,6 +57,11 @@ public class HuffmanFile {
     }
 
     public void toFile(String filename){
+        //determine if the given path is a file or directory
+        if(FileUtils.isDir(filename)){
 
+        }else{
+
+        }
     }
 }

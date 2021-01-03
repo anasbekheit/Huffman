@@ -312,6 +312,35 @@ public class HuffmanHeader {
         return simpleHuffmanTree;
     }
 
+
+    protected void setFile(boolean file) {
+        isFile = file;
+    }
+
+    protected void setNum_of_files(long num_of_files) {
+        this.num_of_files = num_of_files;
+    }
+
+    protected void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    protected void setHuff_char_flag(boolean huff_char_flag) {
+        this.huff_char_flag = huff_char_flag;
+    }
+
+    protected void setNum_of_nodes(int num_of_nodes) {
+        this.num_of_nodes = num_of_nodes;
+    }
+
+    protected void setFile_size(long file_size) {
+        this.file_size = file_size;
+    }
+
+    protected void setSimpleHuffmanTree(SimpleHuffmanTree simpleHuffmanTree) {
+        this.simpleHuffmanTree = simpleHuffmanTree;
+    }
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

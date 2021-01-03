@@ -92,11 +92,15 @@ public class HuffmanEnc {
 
             }
         }
+
         while (pq.size()>1){
-            final HuffmanNode left = pq.poll();
-            final HuffmanNode right=pq.poll();
+            HuffmanNode left = pq.poll();
+            HuffmanNode right=pq.poll();
+
             assert right != null;
-            final HuffmanNode parent= new HuffmanNode('\0', (short)(left.frequency+ right.frequency), left,right );
+            HuffmanNode parent= new HuffmanNode('\0',
+                                                (short)(left.frequency+ right.frequency),
+                                                left, right );
             pq.add(parent);
 
         }
