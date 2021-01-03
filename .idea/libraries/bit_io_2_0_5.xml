@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bit-io-2.0.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/bit-io-2.0.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

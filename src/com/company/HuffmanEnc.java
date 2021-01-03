@@ -1,52 +1,56 @@
 package com.company;
 
+import collections.huffman.trees.HuffmanNode;
+import formats.Utils;
+
 import java.util.*;
 
 public class HuffmanEnc {
-      String encodedData;
-      Node root;
-      short num_entries;
-      byte paddedZeros;
-      Map<Character,String> hashTable;
-      int [] freq;
-    public HuffmanEnc(String encodedData,int[] freq) {
+    public String encodedData;
+    public HuffmanNode root;
+    public short num_entries;
+    public byte paddedZeros;
+    public Map<Character,String> hashTable;
+    public int [] freq;
+
+      public HuffmanEnc(String encodedData,int[] freq) {
         this.encodedData = encodedData;
         this.root=HuffmanEnc.buildHuffmanTree(freq);
     }
     public HuffmanEnc(){}
+
     public HuffmanEnc(int[] freq,byte[] encodedData,int stringLength){
         this.freq=freq;
         this.root=buildHuffmanTree(freq);
-        this.encodedData=getBytesAsString(encodedData,stringLength);
+        this.encodedData= Utils.getBytesAsString(encodedData,stringLength);
 
     }
+
     public void compress(String data){
         this.freq=buildFreqArray(data);
         this.root=buildHuffmanTree(freq);
         buildCodes();
         this.encodedData=generateEncodedData(data);
-        this.paddedZeros= (byte) (8*getStringAsBytes(this.encodedData).length- this.encodedData.length());
+        this.paddedZeros = (byte) (8* Utils.getStringAsBytes(this.encodedData).length- this.encodedData.length());
 
     }
+
     public String decompress (String encodedData){
         final StringBuilder resultBuilder=new StringBuilder();
-        Node current=this.root;
+        HuffmanNode current=this.root;
         for(int i =0 ;i<encodedData.length();){
             while(!current.isLeaf()){
                 char bit=encodedData.charAt(i);
-                if (bit == '1') {
+                if (bit == '1')
                     current=current.rightChild;
-
-                }else if (bit=='0'){
+                else if (bit=='0')
                     current=current.leftChild;
-
-                }
-                else{
+                else
                     throw new IllegalArgumentException("Invalid bit: "+bit);
-                }
+
                 i++;
             }
-            resultBuilder.append(current.character);
+            resultBuilder.append(current.data);
             current=this.root;
         }
         return resultBuilder.toString();
@@ -57,30 +61,30 @@ public class HuffmanEnc {
         buildCodesHelper(this.root,"");
     }
 
-    private void buildCodesHelper(Node root, String s) {
+    private void buildCodesHelper(HuffmanNode root, String s) {
         if(!root.isLeaf()){
             buildCodesHelper(root.leftChild,s+'0');
             buildCodesHelper(root.rightChild,s+'1');
         }
         else{
             this.num_entries++;
-            this.hashTable.put(root.character,s);
+            this.hashTable.put(root.data,s);
         }
     }
 
-    public static Node buildHuffmanTree(int[] freq) {
-        final PriorityQueue<Node> pq=new PriorityQueue<>();
+    public static HuffmanNode buildHuffmanTree(int[] freq) {
+        final PriorityQueue<HuffmanNode> pq=new PriorityQueue<>();
         for(char i=0 ;i<freq.length;i++){
             if(freq[i]>0){
-                pq.add(new Node(i,freq[i],null,null));
+                pq.add(new HuffmanNode(i,freq[i],null,null));
 
             }
         }
         while (pq.size()>1){
-            final Node left = pq.poll();
-            final Node right=pq.poll();
+            final HuffmanNode left = pq.poll();
+            final HuffmanNode right=pq.poll();
             assert right != null;
-            final Node parent= new Node('\0', (short)(left.frequency+ right.frequency), left,right );
+            final HuffmanNode parent= new HuffmanNode('\0', (short)(left.frequency+ right.frequency), left,right );
             pq.add(parent);
 
         }
@@ -101,39 +105,5 @@ public class HuffmanEnc {
             builder.append(this.hashTable.get(character));
         }
         return builder.toString();
-    }
-
-    public static byte[] getStringAsBytes(String encoded){
-        BitSet bitSet = new BitSet(encoded.length());
-        int bitcounter = 0;
-        for(Character c : encoded.toCharArray()) {
-            if(c.equals('1')) {
-                bitSet.set(bitcounter);
-            }
-            bitcounter++;
-        }
-        return Arrays.copyOf(bitSet.toByteArray(),(bitcounter+7)/8);
-    }
-
-    public static String getBytesAsString(byte[] bytes,int stringLength){
-        BitSet set= BitSet.valueOf(bytes);
-        StringBuilder binaryString = new StringBuilder();
-        int setLength=set.length();
-        for(int i = 0; i < setLength; i++) {
-            if(set.get(i)) {
-                binaryString.append("1");
-            } else {
-                binaryString.append("0");
-            }
-         /*   if(i%(20000)==0){
-                System.out.println("Step :"+(i/20000)+" Out of :"+setLength/20000);
-            }*/
-        }
-
-        int completer= stringLength-set.length();
-        for(int i=0;i<completer;i++){
-            binaryString.append("0");
-        }
-        return binaryString.toString();
     }
 }
