@@ -11,7 +11,7 @@ import java.io.IOException;
 public class UsingBitIO {
     public static void main(String[] args) throws IOException {
 
-        StreamByteInput bitInput = new StreamByteInput(new FileInputStream("D:/Users/polit/Projects/Java/University/Algorithms/HuffmanCoding/src/test/resources/myfile.out"));
+        StreamByteInput bitInput = new StreamByteInput(new FileInputStream("myfile.out"));
         final BitInput bitInput2 = new DefaultBitInput(bitInput);
 
         StreamByteInput bitInput1 = new StreamByteInput(new FileInputStream("Test.io"));
