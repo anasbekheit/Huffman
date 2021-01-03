@@ -316,6 +316,9 @@ public class HuffmanHeader {
         return file_sizes;
     }
 
+    public SimpleHuffmanTree getSimpleHuffmanTree() {
+        return simpleHuffmanTree;
+    }
 
     @Override
     public String toString(){

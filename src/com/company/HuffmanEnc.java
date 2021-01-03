@@ -1,8 +1,12 @@
 package com.company;
 
 import collections.huffman.trees.HuffmanNode;
+import collections.huffman.trees.NodeType;
+import collections.huffman.trees.SimpleHuffmanNode;
+import com.github.jinahya.bit.io.BitInput;
 import formats.Utils;
 
+import java.io.IOException;
 import java.util.*;
 
 public class HuffmanEnc {
@@ -12,11 +16,11 @@ public class HuffmanEnc {
     public byte paddedZeros;
     public Map<Character,String> hashTable;
     public int [] freq;
-
-      public HuffmanEnc(String encodedData,int[] freq) {
+    public HuffmanEnc(String encodedData,int[] freq) {
         this.encodedData = encodedData;
         this.root=HuffmanEnc.buildHuffmanTree(freq);
     }
+
     public HuffmanEnc(){}
 
     public HuffmanEnc(int[] freq,byte[] encodedData,int stringLength){
@@ -38,6 +42,7 @@ public class HuffmanEnc {
     public String decompress (String encodedData){
         final StringBuilder resultBuilder=new StringBuilder();
         HuffmanNode current=this.root;
+
         for(int i =0 ;i<encodedData.length();){
             while(!current.isLeaf()){
                 char bit=encodedData.charAt(i);
@@ -52,6 +57,25 @@ public class HuffmanEnc {
             }
             resultBuilder.append(current.data);
             current=this.root;
+        }
+        return resultBuilder.toString();
+    }
+
+    public String decompress(BitInput bitInput, SimpleHuffmanNode hroot, long nbits) throws IOException {
+
+        final StringBuilder resultBuilder=new StringBuilder();
+        SimpleHuffmanNode current=hroot;
+
+        for(int i =0 ;i<nbits;){
+            while(current.type != NodeType.CharacterNode){
+                boolean bit=bitInput.readBoolean();
+                if (bit)
+                    current=current.getRight();
+                else current=current.getLeft();
+                i++;
+            }
+            resultBuilder.append(current.data);
+            current=hroot;
         }
         return resultBuilder.toString();
     }

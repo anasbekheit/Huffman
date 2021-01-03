@@ -187,9 +187,9 @@ public class SimpleHuffmanTree {
     }
 
 
-    void print2D(SimpleHuffmanNode root)
+    public void print2D()
     {
-        print2DUtil(root, 0);
+        print2DUtil(this.root, 0);
     }
 
     private void print2DUtil(SimpleHuffmanNode root, int space) {

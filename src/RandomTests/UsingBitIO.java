@@ -19,10 +19,11 @@ public class UsingBitIO {
 
         HuffmanHeader header = HuffmanHeader.read(bitInput2);
         System.out.println(header.toString());
-        header.write(new DefaultBitOutput(new StreamByteOutput(new FileOutputStream("Test.io"))));
+        header.getSimpleHuffmanTree().print2D();
+        //header.write(new DefaultBitOutput(new StreamByteOutput(new FileOutputStream("Test.io"))));
 
-        HuffmanHeader header2 = HuffmanHeader.read(bitInput22);
-        System.out.println(header2.toString());
+        ///HuffmanHeader header2 = HuffmanHeader.read(bitInput22);
+        ///System.out.println(header2.toString());
 
     }
 }
