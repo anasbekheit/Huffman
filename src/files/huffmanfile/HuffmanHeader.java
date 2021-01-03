@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.BiConsumer;
 
-import static formats.Utils.longArrayToStrArray;
-
 
 public class HuffmanHeader {
     private boolean isFile;
@@ -22,7 +20,7 @@ public class HuffmanHeader {
     private boolean huff_char_flag;
     private int num_of_nodes;
 
-    private long[] file_sizes;
+    private long file_size;
 
     private SimpleHuffmanTree simpleHuffmanTree;
 
@@ -35,7 +33,7 @@ public class HuffmanHeader {
         LEN_FILE_EXT(4,false,HuffmanHeader::readExtension,HuffmanHeader::writeExtension),    // unsigned half a byte (0,20)
 
         NUM_OF_FILES( 8*8, false,HuffmanHeader::readNumOfFiles,HuffmanHeader::writeNumOfFiles), // unsigned long
-        LEN_OF_SIZES( 8*8,false,HuffmanHeader::readSizes,HuffmanHeader::writeSizes),  // unsigned long
+        SIZE( 8*8,false,HuffmanHeader::readSize,HuffmanHeader::writeSize),  // unsigned long
         NUM_OF_NODES(2*8,false,HuffmanHeader::readNumOfNodes,HuffmanHeader::writeNumOfNodes),  // unsigned short
         HUFF_CHAR_FLAG( 1,false,HuffmanHeader::readHuffCharFlag,HuffmanHeader::writeHuffCharFlag),  // unsigned bool
         HUFFMAN_TREE(8,false,HuffmanHeader::readHuffmanTree,HuffmanHeader::writeHuffmanTree),
@@ -95,19 +93,15 @@ public class HuffmanHeader {
         }
     }
 
-    private static void readSizes(BitInput bitInputStream, HuffmanHeader header) {
-        header.file_sizes = new long[Math.toIntExact(header.num_of_files)];
-
-        for (int i = 0; i < header.num_of_files; i++) {
+    private static void readSize(BitInput bitInputStream, HuffmanHeader header) {
             try {
-                header.file_sizes[i] = bitInputStream.readLong(
-                        Components.LEN_OF_SIZES.signed,
-                        Components.LEN_OF_SIZES.numOfBits);
+                header.file_size = bitInputStream.readLong(
+                        Components.SIZE.signed,
+                        Components.SIZE.numOfBits);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     private static void readNumOfNodes(BitInput bitInputStream, HuffmanHeader header) {
@@ -135,8 +129,6 @@ public class HuffmanHeader {
                 header.fileName+= bitInputStream.readChar(8);
 
             }
-
-            header.fileName+=".";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -149,6 +141,8 @@ public class HuffmanHeader {
             len_of_ext = bitInputStream.readByte(
                     Components.LEN_FILE_EXT.signed,
                     Components.LEN_FILE_EXT.numOfBits);
+            if(len_of_ext>0)
+                header.fileName+=".";
 
             for (int i = 0; i <len_of_ext ; i++) {
                 header.fileName+= bitInputStream.readChar(8);
@@ -220,17 +214,15 @@ public class HuffmanHeader {
         }
     }
 
-    private static void writeSizes(BitOutput bitOutputStream, HuffmanHeader header) {
-        for (int i = 0; i < header.num_of_files; i++) {
+    private static void writeSize(BitOutput bitOutputStream, HuffmanHeader header) {
             try {
                 bitOutputStream.writeLong(
-                        Components.LEN_OF_SIZES.signed,
-                        Components.LEN_OF_SIZES.numOfBits,
-                        header.file_sizes[i]);
+                        Components.SIZE.signed,
+                        Components.SIZE.numOfBits,
+                        header.file_size);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     private static void writeNumOfNodes(BitOutput bitOutputStream, HuffmanHeader header) {
@@ -312,8 +304,8 @@ public class HuffmanHeader {
         return num_of_nodes;
     }
 
-    public long[] getFile_sizes() {
-        return file_sizes;
+    public long getFile_size() {
+        return file_size;
     }
 
     public SimpleHuffmanTree getSimpleHuffmanTree() {
@@ -325,7 +317,7 @@ public class HuffmanHeader {
         StringBuilder sb = new StringBuilder();
         sb.append("{\""+ (this.isFile?"Filename\": ":"Folder\": ") +this.fileName)
                 .append(", \"# of files\": "+ String.valueOf(this.num_of_files))
-                .append(", \"offsets\": "+longArrayToStrArray(this.file_sizes))
+                .append(", \"size\": "+String.valueOf(this.file_size))
                 .append(", \"# of Nodes\": "+ String.valueOf(this.num_of_nodes))
                 .append(", \"huffman tree inorder:\" "+ Arrays.toString(simpleHuffmanTree.visitInOrder()))
                 .append("}");

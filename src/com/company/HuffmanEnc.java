@@ -61,7 +61,10 @@ public class HuffmanEnc {
         return resultBuilder.toString();
     }
 
-    public String decompress(BitInput bitInput, SimpleHuffmanNode hroot, long nbits) throws IOException {
+
+    public String decompress(BitInput bitInput,
+                             SimpleHuffmanNode hroot,
+                             long nbits) throws IOException {
 
         final StringBuilder resultBuilder=new StringBuilder();
         SimpleHuffmanNode current=hroot;
@@ -80,21 +83,6 @@ public class HuffmanEnc {
         return resultBuilder.toString();
     }
 
-    private void buildCodes() {
-        this.hashTable= new HashMap<>();
-        buildCodesHelper(this.root,"");
-    }
-
-    private void buildCodesHelper(HuffmanNode root, String s) {
-        if(!root.isLeaf()){
-            buildCodesHelper(root.leftChild,s+'0');
-            buildCodesHelper(root.rightChild,s+'1');
-        }
-        else{
-            this.num_entries++;
-            this.hashTable.put(root.data,s);
-        }
-    }
 
     public static HuffmanNode buildHuffmanTree(int[] freq) {
         final PriorityQueue<HuffmanNode> pq=new PriorityQueue<>();
@@ -113,6 +101,24 @@ public class HuffmanEnc {
 
         }
         return pq.poll();
+    }
+
+
+
+    private void buildCodes() {
+        this.hashTable= new HashMap<>();
+        buildCodesHelper(this.root,"");
+    }
+
+    private void buildCodesHelper(HuffmanNode root, String s) {
+        if(!root.isLeaf()){
+            buildCodesHelper(root.leftChild,s+'0');
+            buildCodesHelper(root.rightChild,s+'1');
+        }
+        else{
+            this.num_entries++;
+            this.hashTable.put(root.data,s);
+        }
     }
 
     private static int[] buildFreqArray(String data) {

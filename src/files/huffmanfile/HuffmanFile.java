@@ -1,8 +1,6 @@
 package files.huffmanfile;
 
 
-import collections.huffman.trees.HuffmanNode;
-import collections.huffman.trees.TreeMapper;
 import com.company.HuffmanEnc;
 import com.github.jinahya.bit.io.BitInput;
 import com.github.jinahya.bit.io.DefaultBitInput;
@@ -12,11 +10,10 @@ import io.vavr.control.Either;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 
 public class HuffmanFile {
 
-    HuffmanHeader header;
+    public HuffmanHeader header;
     public Either<HuffmanFile[],String> data;
 
 
@@ -28,12 +25,13 @@ public class HuffmanFile {
                 data = Either.right(
                         encoder.decompress(bitInputStream,
                                 header.getSimpleHuffmanTree().getRoot(),
-                                header.getFile_sizes()[0]
+                                header.getFile_size()
                         )
                 );
         }else
-            data = Either.left(new HuffmanFile[]{});
+            data = Either.left(deserializeFiles(bitInputStream));
         } catch (IOException e) {
+            System.out.println(header.getFileName());
             e.printStackTrace();
         }
     }
@@ -47,7 +45,15 @@ public class HuffmanFile {
                 ));
     }
 
-
+    private HuffmanFile[] deserializeFiles(BitInput bitInput) throws IOException {
+        long num_of_files = header.getNum_of_files();
+        HuffmanFile[] res = new HuffmanFile[(int)num_of_files];
+        for (int i = 0; i < num_of_files; i++) {
+            res[i] = new HuffmanFile(bitInput);
+            bitInput.align(1);
+        }
+        return res;
+    }
 
     public void toFile(String filename){
 
