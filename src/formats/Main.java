@@ -3,7 +3,7 @@ package formats;
 import collections.extended.ExBitSet;
 import collections.huffman.trees.SimpleHuffmanNode;
 import collections.huffman.trees.SimpleHuffmanTree;
-import collections.pairs.Tuple;
+import io.vavr.Tuple2;
 
 import java.util.BitSet;
 
@@ -15,9 +15,9 @@ public class Main {
 
         SimpleHuffmanNode root = tree.constructBt(abc, abc.length);
 
-        Tuple<ExBitSet,Integer> res = tree.serializeLvlOrder();
-        ExBitSet bs = res._0;
-        Integer size = res._1;
+        Tuple2<ExBitSet,Integer> res = tree.serializeLvlOrder();
+        ExBitSet bs = res._1;
+        Integer size = res._2;
 
         for (int i = 0; i < size; i++) {
             System.out.print(bs.get(i)?"1":"0");

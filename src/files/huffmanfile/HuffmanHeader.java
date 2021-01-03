@@ -2,9 +2,9 @@ package files.huffmanfile;
 
 import collections.extended.ExBitSet;
 import collections.huffman.trees.SimpleHuffmanTree;
-import collections.pairs.Tuple;
 import com.github.jinahya.bit.io.BitInput;
 import com.github.jinahya.bit.io.BitOutput;
+import io.vavr.Tuple2;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -186,9 +186,9 @@ public class HuffmanHeader {
 
 
     private static void writeHuffmanTree(BitOutput bitOutputStream, HuffmanHeader header){
-        Tuple<ExBitSet,Integer> res =  header.simpleHuffmanTree.serializeLvlOrder();
-        ExBitSet bs = res._0;
-        Integer size = res._1;
+        Tuple2<ExBitSet,Integer> res =  header.simpleHuffmanTree.serializeLvlOrder();
+        ExBitSet bs = res._1;
+        Integer size = res._2;
 
         try {
         for (int i = 0; i < size; i++) {

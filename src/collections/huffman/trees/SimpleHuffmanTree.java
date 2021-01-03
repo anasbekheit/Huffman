@@ -1,8 +1,8 @@
 package collections.huffman.trees;
 
 import collections.extended.ExBitSet;
-import collections.pairs.Tuple;
 import com.github.jinahya.bit.io.BitInput;
+import io.vavr.Tuple2;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -145,7 +145,7 @@ public class SimpleHuffmanTree {
     }
 
 
-    public Tuple<ExBitSet, Integer> serializeLvlOrder(){
+    public Tuple2<ExBitSet, Integer> serializeLvlOrder(){
         ExBitSet res = new ExBitSet();
 
         Queue<SimpleHuffmanNode> queue = new LinkedList<>();
@@ -153,7 +153,7 @@ public class SimpleHuffmanTree {
         int[] len = new int[]{0};
 
         if(root == null)
-            return new Tuple<>(res,len[0]);
+            return new Tuple2<>(res,len[0]);
 
         queue.add(root);
 
@@ -183,7 +183,7 @@ public class SimpleHuffmanTree {
         }
         this.nodeCount = nodeCount;
 
-        return new Tuple<>(res,len[0]);
+        return new Tuple2<>(res,len[0]);
     }
 
 

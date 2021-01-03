@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bit-io-2.0.5" level="project" />
     <orderEntry type="library" name="commons-io-2.8.0" level="project" />
+    <orderEntry type="library" name="vavr-1.0.0-alpha-3" level="project" />
   </component>
 </module>
