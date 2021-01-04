@@ -1,15 +1,19 @@
 package RandomTests;
 
-import files.HuffmanUtils;
+import files.HuffmanFileUtils;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class FileCompressionExample {
     public static void main(String[] args){
         try {
-            HuffmanUtils.compressFile(
-                    new File("D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\testfldr\\a.txt")
-            );
+
+            HuffmanFileUtils.compressFolder(
+                    "D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\testfldr"
+                    , Paths.get("D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\testfldr"));
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

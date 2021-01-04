@@ -39,6 +39,12 @@ public class FileUtils {
         return new Tuple2<>(temp[temp.length-2],temp[temp.length-1]);
     }
 
+
+    public static String getFileName(String s){
+        String[] temp  =s.split("\\.");
+        return temp[0];
+    }
+
     public static String readFileAsString(File f)throws Exception {
         return new String(Files.readAllBytes(Path.of(f.getAbsolutePath())));
     }
