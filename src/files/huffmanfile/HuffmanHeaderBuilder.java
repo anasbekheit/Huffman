@@ -81,8 +81,8 @@ public final class HuffmanHeaderBuilder {
         huff_char_flag = true;
         String[] temp =file.getName().split("\\.");
         fileName = temp[0];
-        huffmanTree = encoder.huffmanTree;
-        file_size = encoder.encodedData.length();
+        huffmanTree = encoder.getHuffmanTree();
+        file_size = encoder.getEncodedData().length();
         return this;
     }
 }

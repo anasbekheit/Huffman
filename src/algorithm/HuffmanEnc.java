@@ -9,28 +9,27 @@ import java.io.IOException;
 import java.util.*;
 
 public class HuffmanEnc {
-    public String encodedData;
-    public HuffmanTree huffmanTree;
-    public short num_entries;
-    public Map<Character,String> hashTable;
-    public int [] freq;
+    private String encodedData;
+    private HuffmanTree huffmanTree;
+    private Map<Character,String> hashTable;
+    private int [] freq;
 
 
     public HuffmanEnc(){}
 
 
     public void compress(String data){
-        this.freq   = buildFreqArray(data);
-        huffmanTree = new HuffmanTree();
-        huffmanTree.setRoot(buildHuffmanTree());
+        this.setFreq(buildFreqArray(data));
+        setHuffmanTree(new HuffmanTree());
+        getHuffmanTree().setRoot(buildHuffmanTree());
         buildCodes();
-        this.encodedData=generateEncodedData(data);
+        this.setEncodedData(generateEncodedData(data));
     }
 
     public void compress(HuffmanTree tree,String s){
-        huffmanTree = tree;
+        setHuffmanTree(tree);
         buildCodes();
-        this.encodedData =generateEncodedData(s);
+        this.setEncodedData(generateEncodedData(s));
     }
 
     public String decompress(BitInput bitInput,
@@ -58,9 +57,9 @@ public class HuffmanEnc {
 
     private  HuffmanNode buildHuffmanTree() {
          PriorityQueue<HuffmanNode> pq=new PriorityQueue<>();
-        for(char i=0 ;i<freq.length;i++){
-            if(freq[i]>0){
-                pq.add(new HuffmanNode(i,freq[i],null,null));
+        for(char i = 0; i< getFreq().length; i++){
+            if(getFreq()[i]>0){
+                pq.add(new HuffmanNode(i, getFreq()[i],null,null));
 
             }
         }
@@ -80,8 +79,8 @@ public class HuffmanEnc {
     }
 
     private void buildCodes() {
-        this.hashTable= new HashMap<>();
-        buildCodesHelper(huffmanTree.getRoot(),"");
+        this.setHashTable(new HashMap<>());
+        buildCodesHelper(getHuffmanTree().getRoot(),"");
     }
 
     private void buildCodesHelper(HuffmanNode root, String s) {
@@ -90,8 +89,7 @@ public class HuffmanEnc {
             buildCodesHelper(root.getRight(),s+'1');
         }
         else{
-            this.num_entries++;
-            this.hashTable.put(root.data,s);
+            this.getHashTable().put(root.data,s);
         }
     }
 
@@ -106,8 +104,41 @@ public class HuffmanEnc {
     private String generateEncodedData( String data){
          StringBuilder builder= new StringBuilder();
         for( char character:data.toCharArray()){
-            builder.append(this.hashTable.get(character));
+            builder.append(this.getHashTable().get(character));
         }
         return builder.toString();
+    }
+
+    public String getEncodedData() {
+        return encodedData;
+    }
+
+    public void setEncodedData(String encodedData) {
+        this.encodedData = encodedData;
+    }
+
+    public HuffmanTree getHuffmanTree() {
+        return huffmanTree;
+    }
+
+    public void setHuffmanTree(HuffmanTree huffmanTree) {
+        this.huffmanTree = huffmanTree;
+    }
+
+
+    public Map<Character, String> getHashTable() {
+        return hashTable;
+    }
+
+    public void setHashTable(Map<Character, String> hashTable) {
+        this.hashTable = hashTable;
+    }
+
+    public int[] getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int[] freq) {
+        this.freq = freq;
     }
 }

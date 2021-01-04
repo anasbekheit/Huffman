@@ -66,7 +66,7 @@ public class HuffmanFile {
             encoder.compress(getHeader().getSimpleHuffmanTree(), this.getData().get());
 
             for (char b:
-                    encoder.encodedData.toCharArray()) {
+                    encoder.getEncodedData().toCharArray()) {
                 bitOutput.writeBoolean(b == '1');
             }
             bitOutput.align(1);
