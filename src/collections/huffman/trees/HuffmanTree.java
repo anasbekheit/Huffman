@@ -5,30 +5,28 @@ import com.github.jinahya.bit.io.BitInput;
 import io.vavr.Tuple2;
 
 import java.io.IOException;
-import java.security.KeyPair;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import static formats.Utils.BitStr2BitSet;
 import static formats.Utils.StrToBinStr;
 
-public class SimpleHuffmanTree {
+public class HuffmanTree {
 
     static final int COUNT = 10;
-    private SimpleHuffmanNode root;
+    private HuffmanNode root;
     public int nodeCount;
 
-    public SimpleHuffmanTree(BitInput bitInput,
-                             int      numOfNodes,
-                             int      lenofchar,
-                             boolean  isSigned,
-                             boolean  flag) throws IOException {
+    public HuffmanTree(BitInput bitInput,
+                       int      numOfNodes,
+                       int      lenofchar,
+                       boolean  isSigned,
+                       boolean  flag) throws IOException {
         root = null;
-        SimpleHuffmanNode curr=null;
+        HuffmanNode curr=null;
         int index=0;
-        Queue<SimpleHuffmanNode> q=new LinkedList<>();
+        Queue<HuffmanNode> q=new LinkedList<>();
 
         for(int i=0;i<numOfNodes;i++){
             boolean readByte  = bitInput.readBoolean();
@@ -39,19 +37,19 @@ public class SimpleHuffmanTree {
             }
 
             if(root ==null){
-                root =new SimpleHuffmanNode((char)val);
+                root =new HuffmanNode((char)val);
                 q.add(root);
                 curr=q.peek();
                 index=1;
             }else{
                 if(index==1){
-                    curr.setLeft(new SimpleHuffmanNode((char)val));
+                    curr.setLeft(new HuffmanNode((char)val));
                     if(curr.getLeft().type !=NodeType.CharacterNode)
                         q.add(curr.getLeft());
                     index=2;
 
                 }else if(index==2){
-                    curr.setRight(new SimpleHuffmanNode((char)val));
+                    curr.setRight(new HuffmanNode((char)val));
                     if(curr.getRight().type !=NodeType.CharacterNode)
                         q.add(curr.getRight());
                     q.remove();
@@ -62,29 +60,29 @@ public class SimpleHuffmanTree {
         }
     }
 
-    public SimpleHuffmanTree(){}
+    public HuffmanTree(){}
 
-    public SimpleHuffmanNode constructBt(byte[] arr, int n) {
+    public HuffmanNode constructBt(byte[] arr, int n) {
         root = null;
-        SimpleHuffmanNode curr=null;
+        HuffmanNode curr=null;
         int index=0;
-        Queue<SimpleHuffmanNode> q=new LinkedList<>();
+        Queue<HuffmanNode> q=new LinkedList<>();
 
         for(int i=0;i<n;i++){
             if(root ==null){
-                root =new SimpleHuffmanNode((char)arr[i]);
+                root =new HuffmanNode((char)arr[i]);
                 q.add(root);
                 curr=q.peek();
                 index=1;
             }else{
                 if(index==1){
-                    curr.setLeft(new SimpleHuffmanNode((char)arr[i]));
+                    curr.setLeft(new HuffmanNode((char)arr[i]));
                     if(curr.getLeft().type !=NodeType.CharacterNode)
                         q.add(curr.getLeft());
                     index=2;
 
                 }else if(index==2){
-                    curr.setRight(new SimpleHuffmanNode((char)arr[i]));
+                    curr.setRight(new HuffmanNode((char)arr[i]));
                     if(curr.getRight().type !=NodeType.CharacterNode)
                         q.add(curr.getRight());
                     q.remove();
@@ -99,19 +97,19 @@ public class SimpleHuffmanTree {
 
 
 
-    public SimpleHuffmanNode getRoot()
+    public HuffmanNode getRoot()
     {
         return root;
     }
 
-    public void setRoot(SimpleHuffmanNode root) {
+    public void setRoot(HuffmanNode root) {
         if(root== null)
             throw new IllegalArgumentException("Cannot set Root Node to null");
         this.root = root;
     }
 
 
-    void printInorder(SimpleHuffmanNode node) {
+    void printInorder(HuffmanNode node) {
         if (node == null)
         {
             return;
@@ -130,7 +128,7 @@ public class SimpleHuffmanTree {
         return res.toArray(new String[res.size()]);
     }
 
-    private void visitInOrderHelper(SimpleHuffmanNode node,
+    private void visitInOrderHelper(HuffmanNode node,
                                     ArrayList<String> strlst) {
         if (node == null)
         {
@@ -145,10 +143,11 @@ public class SimpleHuffmanTree {
     }
 
 
+
     public Tuple2<ExBitSet, Integer> serializeLvlOrder(){
         ExBitSet res = new ExBitSet();
 
-        Queue<SimpleHuffmanNode> queue = new LinkedList<>();
+        Queue<HuffmanNode> queue = new LinkedList<>();
         int nodeCount = 0;
         int[] len = new int[]{0};
 
@@ -158,7 +157,7 @@ public class SimpleHuffmanTree {
         queue.add(root);
 
         while (!queue.isEmpty()){
-            SimpleHuffmanNode curr = queue.poll();
+            HuffmanNode curr = queue.poll();
             nodeCount++;
             if (curr.type ==NodeType.HuffNode)
             {
@@ -192,7 +191,7 @@ public class SimpleHuffmanTree {
         print2DUtil(this.root, 0);
     }
 
-    private void print2DUtil(SimpleHuffmanNode root, int space) {
+    private void print2DUtil(HuffmanNode root, int space) {
         if (root == null) return;
 
         space += COUNT;

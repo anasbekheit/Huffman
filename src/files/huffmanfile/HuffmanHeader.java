@@ -1,7 +1,7 @@
 package files.huffmanfile;
 
 import collections.extended.ExBitSet;
-import collections.huffman.trees.SimpleHuffmanTree;
+import collections.huffman.trees.HuffmanTree;
 import com.github.jinahya.bit.io.BitInput;
 import com.github.jinahya.bit.io.BitOutput;
 import io.vavr.Tuple2;
@@ -22,7 +22,7 @@ public class HuffmanHeader {
 
     private long file_size;
 
-    private SimpleHuffmanTree simpleHuffmanTree;
+    private HuffmanTree huffmanTree;
 
     /**
      * Describes the file header definition.
@@ -162,7 +162,7 @@ public class HuffmanHeader {
 
     private static void readHuffmanTree(BitInput bitInputStream, HuffmanHeader header){
         try {
-            header.simpleHuffmanTree = new SimpleHuffmanTree(
+            header.huffmanTree = new HuffmanTree(
                     bitInputStream,
                     header.num_of_nodes,
                     Components.HUFFMAN_TREE.numOfBits,
@@ -180,7 +180,7 @@ public class HuffmanHeader {
 
 
     private static void writeHuffmanTree(BitOutput bitOutputStream, HuffmanHeader header){
-        Tuple2<ExBitSet,Integer> res =  header.simpleHuffmanTree.serializeLvlOrder();
+        Tuple2<ExBitSet,Integer> res =  header.huffmanTree.serializeLvlOrder();
         ExBitSet bs = res._1;
         Integer size = res._2;
 
@@ -258,7 +258,12 @@ public class HuffmanHeader {
 
     private static void writeExtension(BitOutput bitOutputStream, HuffmanHeader header) {
         try {
-            String ext = header.fileName.split("\\.")[1];
+            String[] temp =header.fileName.split("\\.");
+            String temp2 = temp[temp.length-1];
+            String ext ="";
+            if(!header.fileName.equals(temp2))
+                ext =temp2;
+
             byte len_of_ext = (byte)ext.length();
 
             bitOutputStream.writeByte(Components.LEN_FILE_EXT.signed,
@@ -308,12 +313,12 @@ public class HuffmanHeader {
         return file_size;
     }
 
-    public SimpleHuffmanTree getSimpleHuffmanTree() {
-        return simpleHuffmanTree;
+    public HuffmanTree getSimpleHuffmanTree() {
+        return huffmanTree;
     }
 
 
-    protected void setFile(boolean file) {
+    protected void setIsFile(boolean file) {
         isFile = file;
     }
 
@@ -337,8 +342,8 @@ public class HuffmanHeader {
         this.file_size = file_size;
     }
 
-    protected void setSimpleHuffmanTree(SimpleHuffmanTree simpleHuffmanTree) {
-        this.simpleHuffmanTree = simpleHuffmanTree;
+    protected void setSimpleHuffmanTree(HuffmanTree huffmanTree) {
+        this.huffmanTree = huffmanTree;
     }
 
     @Override
@@ -348,7 +353,7 @@ public class HuffmanHeader {
                 .append(", \"# of files\": "+ String.valueOf(this.num_of_files))
                 .append(", \"size\": "+String.valueOf(this.file_size))
                 .append(", \"# of Nodes\": "+ String.valueOf(this.num_of_nodes))
-                .append(", \"huffman tree inorder:\" "+ Arrays.toString(simpleHuffmanTree.visitInOrder()))
+                .append(", \"huffman tree inorder:\" "+ Arrays.toString(huffmanTree.visitInOrder()))
                 .append("}");
 
         return sb.toString();

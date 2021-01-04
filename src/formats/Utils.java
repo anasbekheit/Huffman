@@ -42,18 +42,6 @@ public class Utils {
         return res.toString();
     }
 
-    public static byte[] getStringAsBytes(String encoded){
-        BitSet bitSet = new BitSet(encoded.length());
-        int bitcounter = 0;
-        for(Character c : encoded.toCharArray()) {
-            if(c.equals('1')) {
-                bitSet.set(bitcounter);
-            }
-            bitcounter++;
-        }
-        return Arrays.copyOf(bitSet.toByteArray(),(bitcounter+7)/8);
-    }
-
     public static String getBytesAsString(byte[] bytes, int stringLength){
         BitSet set= BitSet.valueOf(bytes);
         StringBuilder binaryString = new StringBuilder();

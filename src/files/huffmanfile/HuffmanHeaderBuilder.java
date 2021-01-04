@@ -1,16 +1,16 @@
 package files.huffmanfile;
 
-import collections.huffman.trees.SimpleHuffmanTree;
+import collections.huffman.trees.HuffmanTree;
 
 public final class HuffmanHeaderBuilder {
     private long num_of_files;
     private String fileName;
     private boolean huff_char_flag;
-    private int num_of_nodes;
     private long file_size;
-    private SimpleHuffmanTree simpleHuffmanTree;
+    private HuffmanTree huffmanTree;
+    private boolean isFile;
 
-    private HuffmanHeaderBuilder() {
+    HuffmanHeaderBuilder() {
     }
 
     public static HuffmanHeaderBuilder aHuffmanHeader() {
@@ -32,29 +32,31 @@ public final class HuffmanHeaderBuilder {
         return this;
     }
 
-    public HuffmanHeaderBuilder withNum_of_nodes(int num_of_nodes) {
-        this.num_of_nodes = num_of_nodes;
-        return this;
-    }
-
     public HuffmanHeaderBuilder withFile_size(long file_size) {
         this.file_size = file_size;
         return this;
     }
 
-    public HuffmanHeaderBuilder withSimpleHuffmanTree(SimpleHuffmanTree simpleHuffmanTree) {
-        this.simpleHuffmanTree = simpleHuffmanTree;
+    public HuffmanHeaderBuilder withHuffmanTree(HuffmanTree huffmanTree) {
+        this.huffmanTree = huffmanTree;
+        return this;
+    }
+
+
+    public HuffmanHeaderBuilder asFile(boolean b) {
+        this.isFile = b;
         return this;
     }
 
     public HuffmanHeader build() {
         HuffmanHeader huffmanHeader = new HuffmanHeader();
+        huffmanHeader.setIsFile(isFile);
         huffmanHeader.setNum_of_files(num_of_files);
         huffmanHeader.setFileName(fileName);
         huffmanHeader.setHuff_char_flag(huff_char_flag);
-        huffmanHeader.setNum_of_nodes(num_of_nodes);
+        huffmanHeader.setNum_of_nodes(huffmanTree.nodeCount);
         huffmanHeader.setFile_size(file_size);
-        huffmanHeader.setSimpleHuffmanTree(simpleHuffmanTree);
+        huffmanHeader.setSimpleHuffmanTree(huffmanTree);
         return huffmanHeader;
     }
 }

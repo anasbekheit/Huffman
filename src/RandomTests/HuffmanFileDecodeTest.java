@@ -8,11 +8,11 @@ public class HuffmanFileDecodeTest {
     public static void main(String[] args){
         try {
             //HuffmanFile[]
-            HuffmanFile hf  = HuffmanFile.fromFile("D:/Users/polit/Projects/Java/University/Algorithms/HuffmanCoding/src/test/resources/myfile.out");
+            HuffmanFile hf  = HuffmanFile.fromFile("D:/Users/polit/Projects/Java/University/Algorithms/HuffmanCoding/src/test/resources/myfile1.out");
             //System.out.println(hf.data.get());
             for (HuffmanFile h:
-                 hf.data.getLeft()) {
-                System.out.println(h.data.get());
+                 hf.getData().getLeft()) {
+                System.out.println(h.getData().get());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

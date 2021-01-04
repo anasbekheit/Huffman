@@ -1,73 +1,43 @@
 package com.company;
 
-import collections.huffman.trees.HuffmanNode;
+import collections.huffman.trees.HuffmanTree;
 import collections.huffman.trees.NodeType;
-import collections.huffman.trees.SimpleHuffmanNode;
+import collections.huffman.trees.HuffmanNode;
 import com.github.jinahya.bit.io.BitInput;
-import formats.Utils;
 
 import java.io.IOException;
 import java.util.*;
 
 public class HuffmanEnc {
     public String encodedData;
-    public HuffmanNode root;
+    public HuffmanTree huffmanTree;
     public short num_entries;
-    public byte paddedZeros;
     public Map<Character,String> hashTable;
     public int [] freq;
-    public HuffmanEnc(String encodedData,int[] freq) {
-        this.encodedData = encodedData;
-        this.root=HuffmanEnc.buildHuffmanTree(freq);
-    }
+
 
     public HuffmanEnc(){}
 
-    public HuffmanEnc(int[] freq,byte[] encodedData,int stringLength){
-        this.freq=freq;
-        this.root=buildHuffmanTree(freq);
-        this.encodedData= Utils.getBytesAsString(encodedData,stringLength);
-
-    }
 
     public void compress(String data){
         this.freq=buildFreqArray(data);
-        this.root=buildHuffmanTree(freq);
+        huffmanTree.setRoot(buildHuffmanTree());
         buildCodes();
         this.encodedData=generateEncodedData(data);
-        this.paddedZeros = (byte) (8* Utils.getStringAsBytes(this.encodedData).length- this.encodedData.length());
-
     }
 
-    public String decompress (String encodedData){
-        final StringBuilder resultBuilder=new StringBuilder();
-        HuffmanNode current=this.root;
-
-        for(int i =0 ;i<encodedData.length();){
-            while(!current.isLeaf()){
-                char bit=encodedData.charAt(i);
-                if (bit == '1')
-                    current=current.rightChild;
-                else if (bit=='0')
-                    current=current.leftChild;
-                else
-                    throw new IllegalArgumentException("Invalid bit: "+bit);
-
-                i++;
-            }
-            resultBuilder.append(current.data);
-            current=this.root;
-        }
-        return resultBuilder.toString();
+    public void compress(HuffmanTree tree,String s){
+        huffmanTree = tree;
+        buildCodes();
+        this.encodedData =generateEncodedData(s);
     }
-
 
     public String decompress(BitInput bitInput,
-                             SimpleHuffmanNode hroot,
+                             HuffmanNode hroot,
                              long nbits) throws IOException {
 
-        final StringBuilder resultBuilder=new StringBuilder();
-        SimpleHuffmanNode current=hroot;
+         StringBuilder resultBuilder=new StringBuilder();
+        HuffmanNode current=hroot;
 
         for(int i =0 ;i<nbits;){
             while(current.type != NodeType.CharacterNode){
@@ -84,8 +54,9 @@ public class HuffmanEnc {
     }
 
 
-    public static HuffmanNode buildHuffmanTree(int[] freq) {
-        final PriorityQueue<HuffmanNode> pq=new PriorityQueue<>();
+
+    private  HuffmanNode buildHuffmanTree() {
+         PriorityQueue<HuffmanNode> pq=new PriorityQueue<>();
         for(char i=0 ;i<freq.length;i++){
             if(freq[i]>0){
                 pq.add(new HuffmanNode(i,freq[i],null,null));
@@ -99,7 +70,7 @@ public class HuffmanEnc {
 
             assert right != null;
             HuffmanNode parent= new HuffmanNode('\0',
-                                                (short)(left.frequency+ right.frequency),
+                                                (left.getFreq()+ right.getFreq()),
                                                 left, right );
             pq.add(parent);
 
@@ -107,17 +78,15 @@ public class HuffmanEnc {
         return pq.poll();
     }
 
-
-
     private void buildCodes() {
         this.hashTable= new HashMap<>();
-        buildCodesHelper(this.root,"");
+        buildCodesHelper(huffmanTree.getRoot(),"");
     }
 
     private void buildCodesHelper(HuffmanNode root, String s) {
-        if(!root.isLeaf()){
-            buildCodesHelper(root.leftChild,s+'0');
-            buildCodesHelper(root.rightChild,s+'1');
+        if(root.type != NodeType.CharacterNode){
+            buildCodesHelper(root.getLeft(),s+'0');
+            buildCodesHelper(root.getRight(),s+'1');
         }
         else{
             this.num_entries++;
@@ -125,7 +94,7 @@ public class HuffmanEnc {
         }
     }
 
-    private static int[] buildFreqArray(String data) {
+    private  int[] buildFreqArray(String data) {
         int[] freq= new int[256];
         for(char c :data.toCharArray()){
             freq[c]++;
@@ -133,9 +102,9 @@ public class HuffmanEnc {
         return freq;
     }
 
-    private String generateEncodedData(final String data){
-        final StringBuilder builder= new StringBuilder();
-        for(final char character:data.toCharArray()){
+    private String generateEncodedData( String data){
+         StringBuilder builder= new StringBuilder();
+        for( char character:data.toCharArray()){
             builder.append(this.hashTable.get(character));
         }
         return builder.toString();
