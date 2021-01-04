@@ -3,7 +3,7 @@ package files.huffmanfile;
 
 import com.company.HuffmanEnc;
 import com.github.jinahya.bit.io.*;
-import files.AppendableFileOutputStream;
+import files.streams.AppendableFileOutputStream;
 import io.vavr.control.Either;
 
 import java.io.*;
@@ -14,7 +14,9 @@ public class HuffmanFile {
     Either<HuffmanFile[],String> data;
 
 
-    public HuffmanFile(BitInput bitInputStream) {
+    public HuffmanFile(){}
+
+    private HuffmanFile(BitInput bitInputStream) {
         setHeader(HuffmanHeader.read(bitInputStream));
         HuffmanEnc encoder =  new HuffmanEnc();
         try {
@@ -91,7 +93,7 @@ public class HuffmanFile {
         return header;
     }
 
-    public void setHeader(HuffmanHeader header) {
+    void setHeader(HuffmanHeader header) {
         this.header = header;
     }
 
@@ -99,50 +101,8 @@ public class HuffmanFile {
         return data;
     }
 
-    public void setData(Either<HuffmanFile[], String> data) {
+    void setData(Either<HuffmanFile[], String> data) {
         this.data = data;
     }
 
-
-    /**
-     * Mehtod used to compress a given directory of file
-     * @param location
-     */
-//    public static void toFile(String location) throws FileNotFoundException {
-//        //determine if the given path is a file or directory
-//        BitOutput bitOutput;
-//
-//        if(FileUtils.isDir(location)){
-//            String fldrName = getFldrName(location);
-//
-//            bitOutput = new DefaultBitOutput(
-//                    new StreamByteOutput(
-//                            new FileOutputStream(fldrName+".huff")
-//                    )
-//                );
-//
-//            HuffmanHeader folderHeader = new HuffmanHeaderBuilder()
-//                                                                .asFile(false)
-//                                                                .withFileName(fldrName)
-//                                                                .withNum_of_files(NoDirFiles(fldrName))
-//                                                                .withHuff_char_flag(true)
-//                                                                .build();
-//
-//        }else{
-//
-//            Tuple2<String, String> temp = getFileNameAndExtension(location);
-//            String filename= temp._1;
-//            String extension = temp._2;
-//
-//
-//
-//            HuffmanHeader folderHeader = new HuffmanHeaderBuilder()
-//                                                                .asFile(true)
-//                                                                .withFileName(filename+"."+extension)
-//                                                                .withHuff_char_flag(true)
-//                                                                .withHuffmanTree()
-//                                                                .build();
-//
-//        }
-//    }
 }

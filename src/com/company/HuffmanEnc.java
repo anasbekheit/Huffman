@@ -20,7 +20,8 @@ public class HuffmanEnc {
 
 
     public void compress(String data){
-        this.freq=buildFreqArray(data);
+        this.freq   = buildFreqArray(data);
+        huffmanTree = new HuffmanTree();
         huffmanTree.setRoot(buildHuffmanTree());
         buildCodes();
         this.encodedData=generateEncodedData(data);
@@ -36,7 +37,7 @@ public class HuffmanEnc {
                              HuffmanNode hroot,
                              long nbits) throws IOException {
 
-         StringBuilder resultBuilder=new StringBuilder();
+        StringBuilder resultBuilder=new StringBuilder();
         HuffmanNode current=hroot;
 
         for(int i =0 ;i<nbits;){
@@ -84,7 +85,7 @@ public class HuffmanEnc {
     }
 
     private void buildCodesHelper(HuffmanNode root, String s) {
-        if(root.type != NodeType.CharacterNode){
+        if(!root.isLeaf()){
             buildCodesHelper(root.getLeft(),s+'0');
             buildCodesHelper(root.getRight(),s+'1');
         }

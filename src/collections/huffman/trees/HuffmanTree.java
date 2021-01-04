@@ -16,7 +16,6 @@ public class HuffmanTree {
 
     static final int COUNT = 10;
     private HuffmanNode root;
-    public int nodeCount;
 
     public HuffmanTree(BitInput bitInput,
                        int      numOfNodes,
@@ -148,7 +147,6 @@ public class HuffmanTree {
         ExBitSet res = new ExBitSet();
 
         Queue<HuffmanNode> queue = new LinkedList<>();
-        int nodeCount = 0;
         int[] len = new int[]{0};
 
         if(root == null)
@@ -158,7 +156,6 @@ public class HuffmanTree {
 
         while (!queue.isEmpty()){
             HuffmanNode curr = queue.poll();
-            nodeCount++;
             if (curr.type ==NodeType.HuffNode)
             {
                 res.set(len[0]++,false);
@@ -180,7 +177,6 @@ public class HuffmanTree {
             if(curr.getRight()!= null)
                 queue.add(curr.getRight());
         }
-        this.nodeCount = nodeCount;
 
         return new Tuple2<>(res,len[0]);
     }
@@ -206,6 +202,10 @@ public class HuffmanTree {
             System.out.print(" <HUFF> ");
 
         print2DUtil(root.getLeft(), space);
+    }
+
+    public int getNodeCount() {
+        return root.count();
     }
 
 }

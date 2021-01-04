@@ -1,4 +1,4 @@
-package files;
+package files.streams;
 
 import java.io.*;
 

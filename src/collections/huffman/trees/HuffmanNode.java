@@ -22,11 +22,28 @@ public class HuffmanNode extends    AbstractNode<HuffmanNode>
                        HuffmanNode left,
                        HuffmanNode right) {
         super(item);
+        if((byte)item !=0)
+            type = NodeType.CharacterNode;
         this.freq =i;
         this.left =left;
         this.right =right;
     }
 
+
+
+    int count() {
+        HuffmanNode right = getRight();
+        HuffmanNode left = getLeft();
+        int c = 1;
+        if ( right != null ) c += right.count();
+        if ( left != null ) c += left.count();
+        return c;
+    }
+
+
+    public boolean isLeaf(){
+        return this.left==null && this.right==null;
+    }
 
     public int getFreq() {
         return freq;

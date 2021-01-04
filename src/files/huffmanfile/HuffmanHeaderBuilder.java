@@ -1,6 +1,11 @@
 package files.huffmanfile;
 
 import collections.huffman.trees.HuffmanTree;
+import com.company.HuffmanEnc;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class HuffmanHeaderBuilder {
     private long num_of_files;
@@ -10,8 +15,7 @@ public final class HuffmanHeaderBuilder {
     private HuffmanTree huffmanTree;
     private boolean isFile;
 
-    HuffmanHeaderBuilder() {
-    }
+    HuffmanHeaderBuilder() {}
 
     public static HuffmanHeaderBuilder aHuffmanHeader() {
         return new HuffmanHeaderBuilder();
@@ -54,9 +58,32 @@ public final class HuffmanHeaderBuilder {
         huffmanHeader.setNum_of_files(num_of_files);
         huffmanHeader.setFileName(fileName);
         huffmanHeader.setHuff_char_flag(huff_char_flag);
-        huffmanHeader.setNum_of_nodes(huffmanTree.nodeCount);
+        huffmanHeader.setNum_of_nodes(huffmanTree == null ? 0 : huffmanTree.getNodeCount());
         huffmanHeader.setFile_size(file_size);
-        huffmanHeader.setSimpleHuffmanTree(huffmanTree);
+        huffmanHeader.setHuffmanTree(huffmanTree);
         return huffmanHeader;
+    }
+
+    public HuffmanHeaderBuilder fromFiles(ArrayList<HuffmanFile> hfs){
+        isFile = false;
+        num_of_files =hfs.size();
+        huff_char_flag =true;
+        file_size = hfs.stream()
+                       .map(o->o.header.getFile_size())
+                       .reduce(0L,  Long::sum);
+
+        return this;
+    }
+
+
+    public HuffmanHeaderBuilder fromFile(File  file, HuffmanEnc encoder){
+        isFile = true;
+        num_of_files = 1;
+        huff_char_flag = true;
+        String[] temp =file.getName().split("\\.");
+        fileName = temp[0];
+        huffmanTree = encoder.huffmanTree;
+        file_size = encoder.encodedData.length();
+        return this;
     }
 }

@@ -180,16 +180,18 @@ public class HuffmanHeader {
 
 
     private static void writeHuffmanTree(BitOutput bitOutputStream, HuffmanHeader header){
-        Tuple2<ExBitSet,Integer> res =  header.huffmanTree.serializeLvlOrder();
-        ExBitSet bs = res._1;
-        Integer size = res._2;
-
         try {
-        for (int i = 0; i < size; i++) {
-                bitOutputStream.writeBoolean(bs.get(i));
+            if(header.huffmanTree != null){
 
-        }
-        bitOutputStream.align(1);
+                Tuple2<ExBitSet,Integer> res =  header.huffmanTree.serializeLvlOrder();
+                ExBitSet bs = res._1;
+                Integer size = res._2;
+
+                for (int i = 0; i < size; i++) {
+                    bitOutputStream.writeBoolean(bs.get(i));
+                }
+            }
+            bitOutputStream.align(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -342,7 +344,7 @@ public class HuffmanHeader {
         this.file_size = file_size;
     }
 
-    protected void setSimpleHuffmanTree(HuffmanTree huffmanTree) {
+    protected void setHuffmanTree(HuffmanTree huffmanTree) {
         this.huffmanTree = huffmanTree;
     }
 
