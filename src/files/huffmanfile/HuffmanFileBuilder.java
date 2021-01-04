@@ -1,12 +1,12 @@
 package files.huffmanfile;
 
-import com.company.HuffmanEnc;
+import algorithm.HuffmanEnc;
 import io.vavr.control.Either;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import static files.FileUtils.readFileAsString;
+import static utilities.FileUtils.readFileAsString;
 
 public final class HuffmanFileBuilder {
     HuffmanHeader header;

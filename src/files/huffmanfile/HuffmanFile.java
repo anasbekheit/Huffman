@@ -1,7 +1,7 @@
 package files.huffmanfile;
 
 
-import com.company.HuffmanEnc;
+import algorithm.HuffmanEnc;
 import com.github.jinahya.bit.io.*;
 import files.streams.AppendableFileOutputStream;
 import io.vavr.control.Either;

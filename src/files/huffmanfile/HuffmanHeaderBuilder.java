@@ -1,11 +1,10 @@
 package files.huffmanfile;
 
 import collections.huffman.trees.HuffmanTree;
-import com.company.HuffmanEnc;
+import algorithm.HuffmanEnc;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public final class HuffmanHeaderBuilder {
     private long num_of_files;

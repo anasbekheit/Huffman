@@ -1,10 +1,10 @@
-package RandomTests;
+package examples;
 
 import files.huffmanfile.HuffmanFile;
 
 import java.io.IOException;
 
-public class RWHuffmanFileTest {
+public class RWHuffmanFileExample {
     public static void main(String[] args){
         try {
             HuffmanFile hf;

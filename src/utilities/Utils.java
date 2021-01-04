@@ -1,4 +1,4 @@
-package formats;
+package utilities;
 
 import java.util.Arrays;
 import java.util.BitSet;

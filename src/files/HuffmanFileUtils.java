@@ -8,9 +8,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 
-import static files.FileUtils.getFldrName;
-import static files.FileUtils.isDir;
-import static files.FileUtils.getFileName;
+import static utilities.FileUtils.getFldrName;
+import static utilities.FileUtils.isDir;
+import static utilities.FileUtils.getFileName;
 
 public class HuffmanFileUtils {
 

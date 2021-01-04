@@ -1,6 +1,4 @@
-package files;
-
-import io.vavr.Tuple2;
+package utilities;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -11,11 +9,6 @@ public class FileUtils {
         Path path  = new File(dir).toPath();
         if (!Files.exists(path)) return false;
         else return Files.isDirectory(path);
-    }
-
-    public static Long NoDirFiles(String dir){
-        String[] res = new File(dir).list();
-        return res!=null?Long.valueOf(res.length):Long.valueOf(0);
     }
 
     public static String getFldrName(String filename) {
@@ -34,10 +27,6 @@ public class FileUtils {
         return fldrName;
     }
 
-    public static Tuple2<String,String> getFileNameAndExtension(String str){
-        String[] temp = str.split("\\.");
-        return new Tuple2<>(temp[temp.length-2],temp[temp.length-1]);
-    }
 
 
     public static String getFileName(String s){

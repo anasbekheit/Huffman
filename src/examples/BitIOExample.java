@@ -1,14 +1,13 @@
-package RandomTests;
+package examples;
 
 import com.github.jinahya.bit.io.*;
 import files.huffmanfile.HuffmanHeader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class UsingBitIO {
+public class BitIOExample {
     public static void main(String[] args) throws IOException {
 
         StreamByteInput bitInput = new StreamByteInput(new FileInputStream("myfile1.out"));

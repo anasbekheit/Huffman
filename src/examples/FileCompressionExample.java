@@ -1,8 +1,7 @@
-package RandomTests;
+package examples;
 
 import files.HuffmanFileUtils;
 
-import java.io.File;
 import java.nio.file.Paths;
 
 public class FileCompressionExample {

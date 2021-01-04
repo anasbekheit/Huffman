@@ -1,10 +1,10 @@
-package RandomTests;
+package examples;
 
 import files.huffmanfile.HuffmanFile;
 
 import java.io.FileNotFoundException;
 
-public class HuffmanFileDecodeTest {
+public class HuffmanFileDecodeExample {
     public static void main(String[] args){
         try {
             //HuffmanFile[]

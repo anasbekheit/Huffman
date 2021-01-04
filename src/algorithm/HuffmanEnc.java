@@ -1,4 +1,4 @@
-package com.company;
+package algorithm;
 
 import collections.huffman.trees.HuffmanTree;
 import collections.huffman.trees.NodeType;

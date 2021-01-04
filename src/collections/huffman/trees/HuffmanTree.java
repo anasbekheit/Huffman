@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static formats.Utils.BitStr2BitSet;
-import static formats.Utils.StrToBinStr;
+import static utilities.Utils.BitStr2BitSet;
+import static utilities.Utils.StrToBinStr;
 
 public class HuffmanTree {
 

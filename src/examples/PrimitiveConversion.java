@@ -1,4 +1,4 @@
-package RandomTests;
+package examples;
 
 public class PrimitiveConversion {
     public static void main(String[] args){
