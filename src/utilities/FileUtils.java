@@ -13,6 +13,7 @@ public class FileUtils {
 
     public static String getFldrName(String filename) {
         String fldrName;
+
         if(filename.endsWith("/")|| filename.endsWith("\\\\")){
             filename = filename.substring(0, filename.lastIndexOf("\\")-1);
         }
@@ -35,7 +36,9 @@ public class FileUtils {
     }
 
     public static String readFileAsString(File f)throws Exception {
-        return new String(Files.readAllBytes(Path.of(f.getAbsolutePath())));
+        return new String(
+                Files.readAllBytes( Path.of(f.getAbsolutePath()))
+        );
     }
 
 }

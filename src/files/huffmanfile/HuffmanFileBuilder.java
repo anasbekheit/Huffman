@@ -22,6 +22,7 @@ public final class HuffmanFileBuilder {
 
     public HuffmanFileBuilder fromFiles(ArrayList<File> files) throws Exception {
         ArrayList<HuffmanFile> HFL = new ArrayList<>();
+
         for (File f:
              files) {
                 HFL.add(
@@ -35,21 +36,32 @@ public final class HuffmanFileBuilder {
                                     .fromFiles(HFL)
                                     .withFileName(name)
                                     .build();
+
         this.data = Either.left(HFL.toArray(HuffmanFile[]::new));
         return this;
     }
 
     public HuffmanFileBuilder fromFile(File file) throws Exception {
         data = Either.right(readFileAsString(file));
+
         HuffmanEnc encoder =  new HuffmanEnc();
         encoder.compress(data.get());
+
         header = new HuffmanHeaderBuilder()
                                         .fromFile(file,encoder)
+                                        .withFileName(file.getName())
                                         .build();
+
+
+        System.out.println("Filename:          " + header.getFileName());
+        encoder.prettyPrint();
+        System.out.println("");
         return this;
     }
 
     public HuffmanFileBuilder withName(String s){
+        if(header!=null)
+            header.setFileName(name);
         name  = s;
         return this;
     }

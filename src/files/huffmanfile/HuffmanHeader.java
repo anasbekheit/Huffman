@@ -61,6 +61,7 @@ public class HuffmanHeader {
 
     public static HuffmanHeader read(BitInput bitInputStream) {
         HuffmanHeader header = new HuffmanHeader();
+
         for (Components c:
              Components.values()) {
             c.rd.accept(bitInputStream,header);

@@ -61,6 +61,7 @@ public class HuffmanTree {
 
     public HuffmanTree(){}
 
+
     public HuffmanNode constructBt(byte[] arr, int n) {
         root = null;
         HuffmanNode curr=null;

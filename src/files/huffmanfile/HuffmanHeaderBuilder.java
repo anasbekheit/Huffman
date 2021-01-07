@@ -2,6 +2,7 @@ package files.huffmanfile;
 
 import collections.huffman.trees.HuffmanTree;
 import algorithm.HuffmanEnc;
+import utilities.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,8 +80,7 @@ public final class HuffmanHeaderBuilder {
         isFile = true;
         num_of_files = 1;
         huff_char_flag = true;
-        String[] temp =file.getName().split("\\.");
-        fileName = temp[0];
+        fileName = FileUtils.getFileName(file.getName());
         huffmanTree = encoder.getHuffmanTree();
         file_size = encoder.getEncodedData().length();
         return this;

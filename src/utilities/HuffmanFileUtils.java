@@ -1,9 +1,14 @@
-package files;
+package utilities;
 
+import com.github.jinahya.bit.io.BitInput;
+import com.github.jinahya.bit.io.DefaultBitInput;
+import com.github.jinahya.bit.io.StreamByteInput;
+import files.huffmanfile.HuffmanFile;
 import files.huffmanfile.HuffmanFileBuilder;
+import files.huffmanfile.HuffmanHeader;
+import utilities.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -22,7 +27,7 @@ public class HuffmanFileUtils {
         HuffmanFileBuilder.aHuffmanFile()
                                         .fromFile(file)
                                         .build()
-                                        .toFile();
+                                        .toFile(getFileName(file.toString())+".huff");
     }
 
     public static void compressFile(File src,Path destination) throws Exception {
@@ -56,6 +61,7 @@ public class HuffmanFileUtils {
         });
 
         HuffmanFileBuilder.aHuffmanFile()
+                                        .withName(fldrName)
                                         .fromFiles(files)
                                         .build()
                                         .toFile(destination.toString()+"\\"+ fldrName+".huff");
@@ -64,6 +70,30 @@ public class HuffmanFileUtils {
 
     public static void compressFolder(String fldrPath) throws Exception {
         compressFolder(fldrPath, Path.of(fldrPath));
+    }
+
+
+
+    private static void decompressRecursively(HuffmanFile hf, String path) throws IOException {
+        if(hf.getHeader().isFile()){
+            FileWriter fileWritter =  new FileWriter(path+"/"+hf.getHeader().getFileName());
+            fileWritter.write(hf.getData().get());
+            fileWritter.close();
+        }else{
+            Path folderPath  = Paths.get(path+ "/"+hf.getHeader().getFileName());
+
+            Files.createDirectory(folderPath);
+
+            for (HuffmanFile hf1:
+                    hf.getData().getLeft()) {
+                decompressRecursively(hf1, folderPath.toString());
+            }
+        }
+    }
+
+    public static void decompressionFromHuffmanFile(File file) throws IOException {
+        HuffmanFile hf = HuffmanFile.fromFile(file.getPath());
+        decompressRecursively(hf, file.getParent());
     }
 
 

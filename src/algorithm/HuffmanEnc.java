@@ -4,9 +4,11 @@ import collections.huffman.trees.HuffmanTree;
 import collections.huffman.trees.NodeType;
 import collections.huffman.trees.HuffmanNode;
 import com.github.jinahya.bit.io.BitInput;
+import utilities.Utils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class HuffmanEnc {
     private String encodedData;
@@ -94,7 +96,7 @@ public class HuffmanEnc {
     }
 
     private  int[] buildFreqArray(String data) {
-        int[] freq= new int[256];
+        freq= new int[256];
         for(char c :data.toCharArray()){
             freq[c]++;
         }
@@ -140,5 +142,58 @@ public class HuffmanEnc {
 
     public void setFreq(int[] freq) {
         this.freq = freq;
+    }
+
+
+
+    public void prettyPrint(){
+        float compressionRatio = Arrays.stream(freq).sum()*8.0f/encodedData.length();
+
+        StringBuilder  sb =  new StringBuilder("");
+
+        Map<Integer, Integer> columnLengths = new HashMap<>();
+        String[] c = {"Byte", "Code", "New Code"};
+
+
+        for (Map.Entry<Character,String> en: hashTable.entrySet()) {
+            for(int i = 0;i<3;i++) {
+                Integer coli = columnLengths.getOrDefault(i,null);
+                if (coli == null){
+                    columnLengths.putIfAbsent(i, c[i].length());
+                    coli = c[i].length();
+                }
+                int val = 0;
+
+                switch (i){
+                    case 0:
+                        val =String.valueOf((byte) en.getKey().charValue()).length();
+                        break;
+                    case 1:
+                        val =Utils.StrToBinStr(String.valueOf(en.getKey())).length();
+                        break;
+                    case 2:
+                        val = en.getValue().length();
+                        break;
+                }
+                if(val > coli)
+                    columnLengths.put(i,val);
+            }
+        }
+
+        columnLengths.forEach((key, value) -> sb.append("| %")
+                                                .append(value)
+                                                .append("s "));
+        sb.append("|\n");
+
+
+        System.out.printf("Compression Ratio: %.2f\n",compressionRatio);
+        System.out.printf(sb.toString(),c[0],c[1],c[2]);
+
+        hashTable.forEach((key, value) -> System.out.printf(
+                sb.toString(),
+                (byte) key.charValue(),
+                Utils.StrToBinStr(String.valueOf(key)),
+                value
+        ));
     }
 }

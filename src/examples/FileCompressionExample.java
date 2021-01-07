@@ -1,16 +1,17 @@
 package examples;
 
-import files.HuffmanFileUtils;
+import utilities.HuffmanFileUtils;
 
+import java.io.File;
 import java.nio.file.Paths;
 
 public class FileCompressionExample {
     public static void main(String[] args){
         try {
 
-            HuffmanFileUtils.compressFolder(
-                    "D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\testfldr"
-                    , Paths.get("D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\testfldr"));
+            HuffmanFileUtils.compressFile(
+                    new File("D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\TestFldr\\a.txt")
+                    , Paths.get("D:\\Users\\polit\\Projects\\Java\\University\\Algorithms\\Huffman\\TestFldr"));
 
 
 
