@@ -5,7 +5,9 @@ import io.vavr.control.Either;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.*;
 import static utilities.FileUtils.readFileAsString;
 
 public final class HuffmanFileBuilder {
@@ -47,13 +49,14 @@ public final class HuffmanFileBuilder {
         HuffmanEnc encoder =  new HuffmanEnc();
         encoder.compress(data.get());
 
+
         header = new HuffmanHeaderBuilder()
                                         .fromFile(file,encoder)
                                         .withFileName(file.getName())
                                         .build();
 
 
-        System.out.println("Filename:          " + header.getFileName());
+        System.out.println("Filename     :     " + header.getFileName());
         encoder.prettyPrint();
         System.out.println("");
         return this;

@@ -3,6 +3,8 @@ import utilities.HuffmanFileUtils;
 import java.io.File;
 import java.util.Scanner;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class Main {
     public static void main(String[] args) throws Exception {
 
@@ -18,19 +20,27 @@ public class Main {
         {
             i= scanner.nextInt();
 
+            long end,start;
+
             switch (i){
                 case 0:
                     System.out.println("Enter Path of File: ");
                     String s = scanner.next();
                     System.out.println("Compressing ... ");
+                    start  = System.currentTimeMillis();
                     HuffmanFileUtils.compressFile(new File(s));
+                    end = System.currentTimeMillis();
+                    System.out.printf("Execution Time:     %d milliseconds\n", end-start );
                     System.out.println("Done!");
                     break;
                 case 1:
                     System.out.println("Enter Directory of Folder: ");
                     String s1 =scanner.next();
                     System.out.println("Compressing ... ");
+                    start  = System.currentTimeMillis();
                     HuffmanFileUtils.compressFolder(s1);
+                    end = System.currentTimeMillis();
+                    System.out.printf("Execution Time:     %d milliseconds\n",end-start);
                     System.out.println("Done!");
                     break;
                 case 2:
